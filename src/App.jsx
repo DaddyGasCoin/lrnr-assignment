@@ -1,65 +1,45 @@
+import { useState } from "react"
 import SidebarItems from "../Components/Menu"
+import uniqid from "uniqid";
 function App() {
 
-  //Sample data
-  const data = [
-    {
-      key: 'sub1',
-      title: 'Parent Node',
-      icon: 'user',
-      children: [
-        {
-          key: '1',
-          title: 'Child Node 1',
-          children: [
-            {
-              key: '1.1',
-              title: 'GrandChild Node 1',
-            },
-            {
-              key: '1.2',
-              title: 'CrandChild Node 2',
-            },
-            {
-              key: '1.3',
-              title: 'GrandChild Node 3',
-            },
-          ],
-        },
-        {
-          key: '2',
-          title: 'Child Node 2',
-        },
-        {
-          key: '3',
-          title: 'Child Node 3',
-        },
-      ],
-    },
-    {
-      key: 'sub2',
-      title: 'Parent Node 2',
-      icon: 'laptop',
-      children: [
-        {
-          key: '4',
-          title: 'Child Node 1',
-        },
-        {
-          key: '5',
-          title: 'Child Node 2',
-        },
-        {
-          key: '6',
-          title: 'Child Node 3',
-        },
-      ],
-    },
-  ]
+  /*tree structure for the menu;contains parent node and child node,
+    all nodes are objects, only parent nodes contaiain children property
+  */
+  const data = [{ key: 1, title: 'parent', children: [{ key: 3, title: 'parent', children: [] }] },
+  { key: 2, title: 'parent', children: [] }]
+
+  const [tree, setTree] = useState(data)
+
+
+  const updateObject = (obj, id, updated) => {
+    if (obj.key === id) {
+      obj.children.push(updated)
+      return obj
+    }
+
+    if (obj.children.length > 0) {
+      obj.children = obj.children.map(child => updateObject(child, id, updated));
+    }
+
+    //Returns original arr if id is not matching 
+    return obj;
+  };
+
+  const addChild = (key, data) => {
+    let obj = [...tree]
+    const node = {
+      key: uniqid(),
+      title: data
+    }
+    obj = obj.map(obj => updateObject(obj, key, node));
+    setTree(obj)
+  }
+
 
   return (
     <div className="App">
-      <SidebarItems data={data} />
+      <SidebarItems data={tree} addChild={addChild} />
     </div>
   )
 }

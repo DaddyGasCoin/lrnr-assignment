@@ -1,9 +1,20 @@
 
-import { Menu } from 'antd';
+import { Menu, Tooltip, Button, Input, Popover } from 'antd';
+import { PlusOutlined, CheckCircleOutlined } from '@ant-design/icons'
+import { useState } from 'react';
 
 function SidebarItems(props) {
-    const { data } = props;
+    const { data, addChild } = props;
+    const [key, setKey] = useState()
+    const [nodeName, setNodeName] = useState()
 
+    //Popup to add new parent node in menu
+    const addItemForm = (
+        <div>
+            <Input onChange={(e) => setNodeName(e.target.value)} />
+            <Button icon={<CheckCircleOutlined />} onClick={() => addChild(key, nodeName)} />
+        </div>
+    )
     //Checks if item is a parent or child node
     function renderMenu(menu) {
         return menu.map(item => {
@@ -12,9 +23,20 @@ function SidebarItems(props) {
                     <Menu.SubMenu
                         key={item.key}
                         title={
-                            <span>
-                                {item.title}
-                            </span>
+                            <div style={{
+                                display: 'flex', flexDirection: 'row', gap: '10px',
+                                alignItems: "center", justifyContent: "space-between",
+                                marginRight: '3px'
+                            }}>
+                                <span>{item.title}</span>
+                                <Tooltip title="search">
+                                    <Popover content={addItemForm} placement="right" trigger="click">
+                                        <Button icon={<PlusOutlined />} size='small'
+                                            onClick={() => setKey(item.key)} />
+                                    </Popover>
+                                </Tooltip>
+
+                            </div>
                         }
                     >
                         {renderMenu(item.children)}
@@ -41,3 +63,5 @@ function SidebarItems(props) {
 }
 
 export default SidebarItems
+
+
