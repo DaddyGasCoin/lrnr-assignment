@@ -1,18 +1,51 @@
 
-import { Menu, Tooltip, Button, Input, Popover } from 'antd';
+import { Menu, Tooltip, Button, Input, Popover, Form } from 'antd';
 import { PlusOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import { useState } from 'react';
 
 function SidebarItems(props) {
     const { data, addChild } = props;
     const [key, setKey] = useState()
-    const [nodeName, setNodeName] = useState()
 
-    //Popup to add new parent node in menu
+    //Popup to add new parent node in men
+    const [form] = Form.useForm()
+    const onFinish = (values) => {
+        const title = values.title
+        form.resetFields()
+        addChild(key, title)
+
+    };
     const addItemForm = (
         <div>
-            <Input onChange={(e) => setNodeName(e.target.value)} />
-            <Button icon={<CheckCircleOutlined />} onClick={() => addChild(key, nodeName)} />
+            <Form
+                form={form}
+                layout={"inline"}
+                name="basic"
+                labelCol={{
+                    span: 1,
+                }}
+                wrapperCol={{
+                    span: 16,
+                }}
+                onFinish={onFinish}
+            >
+                <Form.Item
+                    label={<span></span>}
+                    name="title"
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    wrapperCol={{
+                        offset: 1,
+                        span: 16,
+                    }}
+                >
+                    <Button shape='circle' icon={<CheckCircleOutlined />} htmlType="submit">
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
         </div>
     )
     //Checks if item is a parent or child node
@@ -29,7 +62,7 @@ function SidebarItems(props) {
                                 marginRight: '3px'
                             }}>
                                 <span>{item.title}</span>
-                                <Tooltip title="search">
+                                <Tooltip title="Add item">
                                     <Popover content={addItemForm} placement="right" trigger="click">
                                         <Button icon={<PlusOutlined />} size='small'
                                             onClick={() => setKey(item.key)} />
