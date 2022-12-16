@@ -12,17 +12,19 @@ function App() {
   const [tree, setTree] = useState(data)
 
 
+  //adds new node to tree
   const updateObject = (obj, id, updated) => {
     if (obj.key === id) {
       obj.children.push(updated)
       return obj
     }
 
+    if (!obj.children) {
+      return obj
+    }
     if (obj.children.length > 0) {
       obj.children = obj.children.map(child => updateObject(child, id, updated));
     }
-
-    //Returns original arr if id is not matching 
     return obj;
   };
 
