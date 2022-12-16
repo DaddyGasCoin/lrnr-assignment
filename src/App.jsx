@@ -12,7 +12,7 @@ function App() {
 
   const [tree, setTree] = useState(data)
 
-  const manageData = (key, data, del_bool) => {
+  const manageData = (key, data, del_bool, parent_bool) => {
     let obj = [...tree]
 
     if (del_bool) {
@@ -25,6 +25,11 @@ function App() {
         key: uniqid(),
         title: data
       }
+
+      if (parent_bool) {
+        node.children = []
+      }
+
       obj = addNode(obj, key, node)
       setTree(obj)
     }

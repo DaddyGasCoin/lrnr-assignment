@@ -1,5 +1,5 @@
 
-import { Menu, Tooltip, Button, Input, Popover, Form } from 'antd';
+import { Menu, Tooltip, Button, Input, Popover, Form, Checkbox } from 'antd';
 import { PlusOutlined, CheckCircleOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useState } from 'react';
 
@@ -7,13 +7,18 @@ function SidebarItems(props) {
    const { data, manageData } = props;
    const [key, setKey] = useState()
 
-   //Popup to add new parent node in menue
+   //Popup to add new node in menue
    const [form] = Form.useForm()
    const onFinish = (values) => {
       const title = values.title
       form.resetFields()
-      manageData(key, title)
-
+      //check if node is parent or child
+      if (values.Parent) {
+         manageData(key, title, '', 'True')
+      }
+      else {
+         manageData(key, title)
+      }
    };
    const addItemForm = (
       <div>
@@ -34,6 +39,16 @@ function SidebarItems(props) {
                name="title"
             >
                <Input />
+            </Form.Item>
+            <Form.Item
+               name="Parent"
+               valuePropName="checked"
+               wrapperCol={{
+                  offset: 1,
+                  span: 10,
+               }}
+            >
+               <Checkbox>Parent</Checkbox>
             </Form.Item>
             <Form.Item
                wrapperCol={{
