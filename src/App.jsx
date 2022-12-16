@@ -1,6 +1,7 @@
 import { useState } from "react"
 import SidebarItems from "../Components/Menu"
 import uniqid from "uniqid";
+import { addNode, deleteNode } from "../util/manageTree";
 function App() {
 
   /*tree structure for the menu;contains parent node and child node,
@@ -11,37 +12,29 @@ function App() {
 
   const [tree, setTree] = useState(data)
 
-
-  //adds new node to tree
-  const updateObject = (obj, id, updated) => {
-    if (obj.key === id) {
-      obj.children.push(updated)
-      return obj
-    }
-
-    if (!obj.children) {
-      return obj
-    }
-    if (obj.children.length > 0) {
-      obj.children = obj.children.map(child => updateObject(child, id, updated));
-    }
-    return obj;
-  };
-
-  const addChild = (key, data) => {
+  const manageData = (key, data, del_bool) => {
     let obj = [...tree]
-    const node = {
-      key: uniqid(),
-      title: data
+
+    if (del_bool) {
+      obj = deleteNode(obj, key)
+      setTree(obj)
     }
-    obj = obj.map(obj => updateObject(obj, key, node));
-    setTree(obj)
+
+    else {
+      const node = {
+        key: uniqid(),
+        title: data
+      }
+      obj = addNode(obj, key, node)
+      setTree(obj)
+    }
+
   }
 
 
   return (
     <div className="App">
-      <SidebarItems data={tree} addChild={addChild} />
+      <SidebarItems data={tree} manageData={manageData} />
     </div>
   )
 }
