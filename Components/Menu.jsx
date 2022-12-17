@@ -142,7 +142,7 @@ function SidebarItems(props) {
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             style={{
-               maxHeight: '95vh', borderRight: 0, width: '300px', overflow: 'auto'
+               width: '300px'
             }}>
             {renderMenu(data)}
          </Menu>

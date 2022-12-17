@@ -64,7 +64,7 @@ function App() {
   return (
     <div className="App h-screen">
       <DisplayHeader />
-      <div className="flex flex-row p-4 gap-4 ">
+      <div className="flex flex-row p-3 gap-4 ">
         <SidebarItems data={tree} manageData={manageData} nodeHandler={viewNodeHandler} />
         {viewNode ? <ShowNodeContent id={viewNode} /> : null}
       </div>
