@@ -2,6 +2,7 @@
 import { Menu, Tooltip, Button, Input, Popover, Form, Checkbox } from 'antd';
 import { PlusOutlined, CheckCircleOutlined, DeleteOutlined } from '@ant-design/icons'
 import { useState } from 'react';
+import { navItems } from './menucomponents/menuNavItems';
 
 function SidebarItems(props) {
    const { data, manageData, nodeHandler } = props;
@@ -9,6 +10,7 @@ function SidebarItems(props) {
 
    //Popup to add new node in menue
    const [form] = Form.useForm()
+
    const onFinish = (values) => {
       const title = values.title
       form.resetFields()
@@ -20,6 +22,7 @@ function SidebarItems(props) {
          manageData(key, title)
       }
    };
+
    const addItemForm = (
       <div>
          <Form
@@ -72,13 +75,9 @@ function SidebarItems(props) {
                   key={item.key}
                   title={
                      // Displays Node name and buttons to add or delete node
-                     <div style={{
-                        display: 'flex', flexDirection: 'row', gap: '10px',
-                        alignItems: "center", justifyContent: "space-between",
-                        marginRight: '3px'
-                     }} onClick={(() => nodeHandler(item.key))}>
+                     <div className='key-container' onClick={(() => nodeHandler(item.key))}>
                         <span>{item.title}</span>
-                        <div className="">
+                        <div>
                            <Tooltip title="Add item">
                               <Popover content={addItemForm} placement="right" trigger="click">
                                  <Button icon={<PlusOutlined />} size='small'
@@ -88,6 +87,7 @@ function SidebarItems(props) {
                                     }} />
                               </Popover>
                            </Tooltip>
+
                            <Tooltip title="Delete node">
                               <Popover content={addItemForm} placement="right" trigger="click">
                                  <Button icon={<DeleteOutlined />} size='small'
@@ -97,9 +97,8 @@ function SidebarItems(props) {
                                     }} />
                               </Popover>
                            </Tooltip>
+
                         </div>
-
-
                      </div>
                   }
                >
@@ -110,11 +109,7 @@ function SidebarItems(props) {
 
          return (
             <Menu.Item key={item.key}>
-               <div style={{
-                  display: 'flex', flexDirection: 'row', gap: '10px',
-                  alignItems: "center", justifyContent: "space-between",
-                  marginRight: '3px'
-               }} onClick={(() => nodeHandler(item.key))}>
+               <div className="key-container" onClick={(() => nodeHandler(item.key))}>
                   <span>{item.title}</span>
                   <Tooltip title="Delete node">
                      <Popover content={addItemForm} placement="right" trigger="click">
@@ -132,14 +127,27 @@ function SidebarItems(props) {
    }
 
    return (
-      <Menu mode="inline"
-         defaultSelectedKeys={['1']}
-         defaultOpenKeys={['sub1']}
-         style={{
-            maxHeight: '95vh', borderRight: 0, width: '350px', overflow: 'auto'
-         }}>
-         {renderMenu(data)}
-      </Menu>
+      <div className='menu-container'>
+         <Menu mode="horizontal" items={navItems} style={{ width: '300px' }} />
+         <Tooltip title="Add item">
+            <Popover content={addItemForm} placement="right" trigger="click">
+               <Button icon={<PlusOutlined />} size='small'
+                  onClick={(e) => {
+                     e.stopPropagation();
+                     setKey('baseNode')
+                  }} />
+            </Popover>
+         </Tooltip>
+         <Menu mode="inline"
+            defaultSelectedKeys={['1']}
+            defaultOpenKeys={['sub1']}
+            style={{
+               maxHeight: '95vh', borderRight: 0, width: '300px', overflow: 'auto'
+            }}>
+            {renderMenu(data)}
+         </Menu>
+      </div>
+
    );
 }
 

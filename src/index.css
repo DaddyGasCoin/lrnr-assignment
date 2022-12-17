@@ -38,4 +38,15 @@
 .menu-container {
     display: flex;
     flex-direction: column;
+    gap: 8px
+}
+
+.key-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 3px;
+
 }

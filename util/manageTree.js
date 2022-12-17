@@ -20,6 +20,10 @@ const recurseTree = (tree, key, newNode) => {
 }
 
 const addNode = (tree, key, newNode) => {
+    if (key === 'baseNode') {
+        tree.push(newNode)
+        return tree
+    }
     return tree.map(obj => recurseTree(obj, key, newNode));
 }
 

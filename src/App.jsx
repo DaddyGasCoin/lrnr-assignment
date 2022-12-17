@@ -57,9 +57,7 @@ function App() {
 
   return (
     <div className="App h-screen">
-      {/* <div className="h-5 bg-slate-500"> */}
       <DisplayHeader />
-      {/* </div> */}
       <div className="flex flex-row p-2 ">
         <SidebarItems data={tree} manageData={manageData} nodeHandler={viewNodeHandler} />
         {viewNode ? <ShowNodeContent id={viewNode} /> : null}
