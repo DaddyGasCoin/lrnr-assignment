@@ -4,22 +4,28 @@ import ShowNodeContent from "../Components/ShowNodeContent"
 import uniqid from "uniqid";
 import { addNode, deleteNode } from "../util/manageTree";
 import DisplayHeader from "../Components/DisplayHeader";
+import { sampledb, samplenode } from "../util/SampleData";
 function App() {
 
   /*tree structure for the menu;contains parent node and child node,
     all nodes are objects, only parent nodes contaiain children property
   */
-  const data = [{ key: 1, title: 'parent', children: [{ key: 3, title: 'parent', children: [] }] },
-  { key: 2, title: 'parent', children: [] }]
-
+  const data = JSON.parse(sampledb)
+  const nodeData = samplenode
   const [tree, setTree] = useState(data)
   const [viewNode, setViewNode] = useState(false)
 
   useEffect(() => {
-
+    /*
+        checks in local storeage if db already exists
+        if no use sample data and store in db
+    */
     const db = localStorage.getItem('db')
     if (!db) {
       localStorage.setItem('db', JSON.stringify(data))
+      for (const y in nodeData) {
+        localStorage.setItem(y, nodeData[y])
+      }
     }
     else {
       setTree(JSON.parse(db))
@@ -58,7 +64,7 @@ function App() {
   return (
     <div className="App h-screen">
       <DisplayHeader />
-      <div className="flex flex-row p-2 ">
+      <div className="flex flex-row p-4 gap-4 ">
         <SidebarItems data={tree} manageData={manageData} nodeHandler={viewNodeHandler} />
         {viewNode ? <ShowNodeContent id={viewNode} /> : null}
       </div>
