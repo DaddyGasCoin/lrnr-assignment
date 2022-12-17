@@ -3,6 +3,7 @@ import SidebarItems from "../Components/Menu"
 import ShowNodeContent from "../Components/ShowNodeContent"
 import uniqid from "uniqid";
 import { addNode, deleteNode } from "../util/manageTree";
+import DisplayHeader from "../Components/DisplayHeader";
 function App() {
 
   /*tree structure for the menu;contains parent node and child node,
@@ -56,10 +57,12 @@ function App() {
 
   return (
     <div className="App h-screen">
+      {/* <div className="h-5 bg-slate-500"> */}
+      <DisplayHeader />
+      {/* </div> */}
       <div className="flex flex-row p-2 ">
         <SidebarItems data={tree} manageData={manageData} nodeHandler={viewNodeHandler} />
         {viewNode ? <ShowNodeContent id={viewNode} /> : null}
-
       </div>
     </div>
   )

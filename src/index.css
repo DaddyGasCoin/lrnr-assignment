@@ -1,3 +1,41 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    margin: 0px
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    /* background-color: brown; */
+    padding: 10px;
+    /* margin: 5px; */
+    justify-content: space-between;
+}
+
+.header-right {
+    display: flex;
+    gap: 8px;
+}
+
+.user-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-popup>* {
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.user-popup>*:hover {
+    background-color: #e2e8f0;
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+}
