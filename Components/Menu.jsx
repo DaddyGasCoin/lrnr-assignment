@@ -4,7 +4,7 @@ import { PlusOutlined, CheckCircleOutlined, DeleteOutlined } from '@ant-design/i
 import { useState } from 'react';
 
 function SidebarItems(props) {
-   const { data, manageData } = props;
+   const { data, manageData, nodeHandler } = props;
    const [key, setKey] = useState()
 
    //Popup to add new node in menue
@@ -56,7 +56,7 @@ function SidebarItems(props) {
                   span: 16,
                }}
             >
-               <Button icon={<CheckCircleOutlined />} htmlType="submit">
+               <Button onClick={(e) => e.stopPropagation()} icon={<CheckCircleOutlined />} htmlType="submit">
                </Button>
             </Form.Item>
          </Form>
@@ -76,19 +76,25 @@ function SidebarItems(props) {
                         display: 'flex', flexDirection: 'row', gap: '10px',
                         alignItems: "center", justifyContent: "space-between",
                         marginRight: '3px'
-                     }}>
+                     }} onClick={(() => nodeHandler(item.key))}>
                         <span>{item.title}</span>
                         <div className="">
                            <Tooltip title="Add item">
                               <Popover content={addItemForm} placement="right" trigger="click">
                                  <Button icon={<PlusOutlined />} size='small'
-                                    onClick={() => setKey(item.key)} />
+                                    onClick={(e) => {
+                                       e.stopPropagation();
+                                       setKey(item.key)
+                                    }} />
                               </Popover>
                            </Tooltip>
                            <Tooltip title="Delete node">
                               <Popover content={addItemForm} placement="right" trigger="click">
                                  <Button icon={<DeleteOutlined />} size='small'
-                                    onClick={() => manageData(item.key, '', 'delete')} />
+                                    onClick={(e) => {
+                                       e.stopPropagation();
+                                       manageData(item.key, '', 'delete')
+                                    }} />
                               </Popover>
                            </Tooltip>
                         </div>
@@ -108,12 +114,15 @@ function SidebarItems(props) {
                   display: 'flex', flexDirection: 'row', gap: '10px',
                   alignItems: "center", justifyContent: "space-between",
                   marginRight: '3px'
-               }}>
+               }} onClick={(() => nodeHandler(item.key))}>
                   <span>{item.title}</span>
                   <Tooltip title="Delete node">
                      <Popover content={addItemForm} placement="right" trigger="click">
                         <Button icon={<DeleteOutlined />} size='small'
-                           onClick={() => manageData(item.key, '', 'delete')} />
+                           onClick={(e) => {
+                              e.stopPropagation();
+                              manageData(item.key, '', 'delete')
+                           }} />
                      </Popover>
                   </Tooltip>
                </div>
@@ -126,7 +135,9 @@ function SidebarItems(props) {
       <Menu mode="inline"
          defaultSelectedKeys={['1']}
          defaultOpenKeys={['sub1']}
-         style={{ height: '100%', borderRight: 0, width: '250px' }}>
+         style={{
+            maxHeight: '95vh', borderRight: 0, width: '350px', overflow: 'auto'
+         }}>
          {renderMenu(data)}
       </Menu>
    );
